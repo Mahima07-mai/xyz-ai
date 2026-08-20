@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    font-family: theme("fontFamily.body");
+  }
+  :focus-visible {
+    outline: 2px solid theme("colors.marigold.500");
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Signature texture: a faint chalk-dust grain over the dark chat
+     surfaces, standing in for a blackboard the assistant "writes" on. */
+  .chalkboard {
+    background-color: theme("colors.chalk.800");
+    background-image: theme("backgroundImage.chalk-fiber");
+    background-size: theme("backgroundSize.fiber");
+  }
+
+  /* A hand-ruled register line, used under portal headers and inside the
+     attendance-style quick-action chips -- a nod to the physical
+     attendance register this whole app replaces. */
+  .register-rule {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 27px,
+      theme("colors.chalk.200") 28px
+    );
+  }
+
+  /* Day 4 afternoon (Avatar layer, components/AvatarWidget.jsx): a
+     lightweight idle eye-blink loop. Kept as plain CSS keyframes rather
+     than a JS-driven animation because the eyes have no real signal to
+     be driven by (unlike the mouth, which reacts to actual TTS boundary
+     events in React state) -- see AvatarWidget.jsx's docstring. The
+     existing prefers-reduced-motion rule above already disables this
+     for anyone who needs it, so no extra accessibility handling is
+     needed here. */
+  .avatar-blink {
+    animation: avatar-blink 4.5s ease-in-out infinite;
+    transform-origin: center;
+  }
+}
+
+@keyframes avatar-blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.12);
+  }
+}
