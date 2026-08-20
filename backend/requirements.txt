@@ -1,0 +1,21 @@
+# Production dependencies -- installed in the Docker image.
+# Install with: pip install -r requirements.txt
+# For local dev/test extras, also install requirements-dev.txt.
+
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+pydantic==2.9.2          # imported directly in app/auth.py (BaseModel, field_validator);
+                          # pinned explicitly rather than left to fastapi's transitive resolution
+sqlalchemy==2.0.35
+psycopg2-binary==2.9.9    # PostgreSQL driver -- required at runtime because DATABASE_URL
+                          # defaults to a postgresql:// URL (app/database.py). Without this,
+                          # the app installs and even passes the test suite (tests run against
+                          # SQLite, see tests/conftest.py) but fails at startup/first query
+                          # against a real Postgres instance -- exactly the failure mode this
+                          # file previously had.
+python-dotenv==1.0.1
+openai>=1.40.0            # app/llm_client.py talks to OpenRouter's OpenAI-compatible
+                          # /chat/completions endpoint via this SDK (base_url swapped in config.py)
+pyjwt==2.9.0
+httpx==0.27.2
+bcrypt==4.2.0
